@@ -92,8 +92,5 @@
     <ClInclude Include="ShaderData.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightSource.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

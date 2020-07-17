@@ -8,6 +8,8 @@
 #include "Floor.h"
 #include "Pillar.h"
 
+#include "ShaderData.h"
+
 int main(int argc, char** argv)
 {
 	// Setup SDL
@@ -67,6 +69,25 @@ int main(int argc, char** argv)
 	pillarLeft->Position.x = -3.0f;
 	pillarRight->Position.x = 3.0f;
 
+	// Lights
+	DirectionalLight directionalLight = {};
+	directionalLight.mCameraPos = camera->GetPosition();
+	directionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	directionalLight.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
+	directionalLight.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
+	directionalLight.mDirection = DirectX::XMFLOAT4(0.0f, 0.5f, -0.5f, 1.0f);
+
+	PointLight pointLight = {};
+	pointLight.mCameraPos = camera->GetPosition();
+	pointLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	pointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
+	pointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
+	pointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 0.5f, 2.0f, 1.0f);
+
+	LightBuffer lightBuffer;
+	lightBuffer.mDirectionalLight = directionalLight;
+	lightBuffer.mPointLight = pointLight;
+
 	// Main loop
 	bool running = true;
 	while (running)
@@ -115,6 +136,11 @@ int main(int argc, char** argv)
 			renderer->Clear();
 
 			shader->Use();
+
+			ID3D11Buffer* lightConsantBuffer = renderer->GetLightConstantBuffer();
+			renderer->GetDeviceContext()->PSSetConstantBuffers(1, 1, &lightConsantBuffer);
+			renderer->GetDeviceContext()->UpdateSubresource(lightConsantBuffer, 0, nullptr, &lightBuffer, 0, 0);
+
 			crate->Render(camera);
 			floor->Render(camera);
 
