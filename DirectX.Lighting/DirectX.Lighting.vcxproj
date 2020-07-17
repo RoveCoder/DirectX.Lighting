@@ -194,6 +194,7 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="LightSource.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Pillar.h" />
     <ClInclude Include="Renderer.h" />

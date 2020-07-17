@@ -23,6 +23,7 @@ bool Renderer::Init()
 	SetViewport(width, height);
 
 	CreateWorldConstantBuffer();
+	CreateLightConstantBuffer();
 
 	CreateRasterStateSolid();
 	CreateRasterStateWireframe();
@@ -273,4 +274,14 @@ void Renderer::CreateWorldConstantBuffer()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	bd.CPUAccessFlags = 0;
 	DX::ThrowIfFailed(m_Device->CreateBuffer(&bd, nullptr, &m_WorldConstantBuffer));
+}
+
+void Renderer::CreateLightConstantBuffer()
+{
+	D3D11_BUFFER_DESC bd = {};
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = sizeof(LightBuffer);
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = 0;
+	DX::ThrowIfFailed(m_Device->CreateBuffer(&bd, nullptr, &m_LightConstantBuffer));
 }

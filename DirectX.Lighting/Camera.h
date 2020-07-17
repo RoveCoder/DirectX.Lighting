@@ -9,6 +9,7 @@ public:
 
 	void Resize(int width, int height);
 
+	constexpr DirectX::XMFLOAT3 GetPosition() { return m_Position; }
 	constexpr DirectX::XMMATRIX GetView() { return m_View; }
 	constexpr DirectX::XMMATRIX GetProjection() { return m_Projection; }
 

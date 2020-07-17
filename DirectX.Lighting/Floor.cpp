@@ -65,6 +65,7 @@ void Floor::Render(Camera* camera)
     cb.mWorld = DirectX::XMMatrixTranspose(world);
     cb.mView = DirectX::XMMatrixTranspose(camera->GetView());
     cb.mProjection = DirectX::XMMatrixTranspose(camera->GetProjection());
+    cb.mWorldInverse = DirectX::XMMatrixInverse(nullptr, world);
 
     ID3D11Buffer* worldConstantBuffer = m_Renderer->GetWorldConstantBuffer();
     m_Renderer->GetDeviceContext()->VSSetConstantBuffers(0, 1, &worldConstantBuffer);
@@ -72,6 +73,29 @@ void Floor::Render(Camera* camera)
     m_Renderer->GetDeviceContext()->UpdateSubresource(worldConstantBuffer, 0, nullptr, &cb, 0, 0);
 
     m_Renderer->GetDeviceContext()->PSSetShaderResources(0, 1, &m_DiffuseTexture);
+
+    // Set Light buffer
+    DirectionalLight directionalLight = {};
+    directionalLight.mCameraPos = camera->GetPosition();
+    directionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    directionalLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
+    directionalLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
+    directionalLight.mDirection = DirectX::XMFLOAT4(0.0f, 0.5f, -0.5f, 1.0f);
+
+    PointLight pointLight = {};
+    pointLight.mCameraPos = camera->GetPosition();
+    pointLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    pointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
+    pointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
+    pointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 0.5f, 2.0f, 1.0f);
+
+    LightBuffer lightBuffer;
+    lightBuffer.mDirectionalLight = directionalLight;
+    lightBuffer.mPointLight = pointLight;
+
+    ID3D11Buffer* lightConsantBuffer = m_Renderer->GetLightConstantBuffer();
+    m_Renderer->GetDeviceContext()->UpdateSubresource(lightConsantBuffer, 0, nullptr, &lightBuffer, 0, 0);
+    m_Renderer->GetDeviceContext()->PSSetConstantBuffers(1, 1, &lightConsantBuffer);
 
     // Render geometry
     m_Renderer->GetDeviceContext()->DrawIndexed((UINT)m_MeshData.indices.size(), 0, 0);

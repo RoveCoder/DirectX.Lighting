@@ -1,3 +1,21 @@
+struct DirectionalLight
+{
+	float4 mDiffuse;
+	float4 mAmbient;
+	float4 mSpecular;
+	float4 mDirection;
+};
+
+struct PointLight
+{
+	float4 mDiffuse;
+	float4 mAmbient;
+	float4 mSpecular;
+	float4 mLightPos;
+	float3 mCameraPos;
+	float padding;
+};
+
 cbuffer WorldBuffer : register(b0)
 {
 	matrix World;
@@ -5,6 +23,12 @@ cbuffer WorldBuffer : register(b0)
 	matrix Projection;
 	matrix InverseWorld;
 }
+
+cbuffer DirectionalLightBuffer : register(b1)
+{
+	DirectionalLight mDirectionalLight;
+	PointLight mPointLight;
+};
 
 struct VertexInput
 {

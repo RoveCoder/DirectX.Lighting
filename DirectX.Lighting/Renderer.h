@@ -27,6 +27,7 @@ public:
 	void SetLinearFilter();
 
 	constexpr ID3D11Buffer* GetWorldConstantBuffer() { return m_WorldConstantBuffer; }
+	constexpr ID3D11Buffer* GetLightConstantBuffer() { return m_LightConstantBuffer; }
 
 private:
 	SDL_Window* m_SdlWindow = nullptr;
@@ -64,8 +65,10 @@ private:
 
 	// Shader data
 	ID3D11Buffer* m_WorldConstantBuffer = nullptr;
+	ID3D11Buffer* m_LightConstantBuffer = nullptr;
 
 	void CreateWorldConstantBuffer();
+	void CreateLightConstantBuffer();
 };
 
 namespace DX
