@@ -1,13 +1,20 @@
 #pragma once
 
-class LightSource
+#include <DirectXMath.h>
+
+struct LightSource
 {
-public:
-	LightSource();
+	DirectX::XMFLOAT4 Diffuse;
+	DirectX::XMFLOAT4 Ambient;
+	DirectX::XMFLOAT4 Specular;
+};
 
+struct DirectionalLight : public LightSource
+{
+	DirectX::XMFLOAT4 LightDirection;
+};
 
-
-private:
-
+struct PointLight : public LightSource
+{
 
 };

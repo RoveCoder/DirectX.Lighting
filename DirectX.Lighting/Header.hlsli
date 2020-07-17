@@ -1,9 +1,18 @@
+struct Material
+{
+	float4 mDiffuse;
+	float4 mAmbient;
+	float4 mSpecular;
+};
+
 struct DirectionalLight
 {
 	float4 mDiffuse;
 	float4 mAmbient;
 	float4 mSpecular;
 	float4 mDirection;
+	float3 mCameraPos;
+	float padding;
 };
 
 struct PointLight
@@ -22,6 +31,8 @@ cbuffer WorldBuffer : register(b0)
 	matrix View;
 	matrix Projection;
 	matrix InverseWorld;
+
+	Material mMaterial;
 }
 
 cbuffer DirectionalLightBuffer : register(b1)
