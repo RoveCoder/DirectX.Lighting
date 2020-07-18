@@ -18,6 +18,9 @@
     <Filter Include="External">
       <UniqueIdentifier>{53290e61-e982-4cd7-aa9e-733be30af21e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lights">
+      <UniqueIdentifier>{f92dd44f-3c21-4cc7-9492-d20c179ad532}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Header.hlsli">
@@ -60,6 +63,12 @@
     <ClCompile Include="Pillar.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
+    <ClCompile Include="PointLightSource.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLightSource.cpp">
+      <Filter>Source Files\Lights</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -91,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="ShaderData.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightSource.h">
+      <Filter>Source Files\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLightSource.h">
+      <Filter>Source Files\Lights</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

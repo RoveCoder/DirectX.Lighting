@@ -8,6 +8,9 @@
 #include "Floor.h"
 #include "Pillar.h"
 
+#include "DirectionalLightSource.h"
+#include "PointLightSource.h"
+
 #include "ShaderData.h"
 
 int main(int argc, char** argv)
@@ -70,12 +73,20 @@ int main(int argc, char** argv)
 	pillarRight->Position.x = 3.0f;
 
 	// Lights
+	DirectionalLightSource* directionalLightSource = new DirectionalLightSource(renderer);
+	if (!directionalLightSource->Load())
+		return -1;
+
+	PointLightSource* pointLightSource = new PointLightSource(renderer);
+	if (!pointLightSource->Load())
+		return -1;
+
 	DirectionalLight directionalLight = {};
 	directionalLight.mCameraPos = camera->GetPosition();
 	directionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	directionalLight.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
 	directionalLight.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
-	directionalLight.mDirection = DirectX::XMFLOAT4(0.0f, 0.5f, -0.5f, 1.0f);
+	directionalLight.mDirection = DirectX::XMFLOAT4(0.8f, 0.5f, -0.5f, 1.0f);
 
 	PointLight pointLight = {};
 	pointLight.mCameraPos = camera->GetPosition();
@@ -146,6 +157,9 @@ int main(int argc, char** argv)
 
 			pillarLeft->Render(camera);
 			pillarRight->Render(camera);
+
+			directionalLightSource->Render(camera);
+			pointLightSource->Render(camera);
 
 			renderer->Render();
 		}

@@ -181,10 +181,12 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Crate.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DirectionalLightSource.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pillar.cpp" />
+    <ClCompile Include="PointLightSource.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
@@ -192,10 +194,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Crate.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DirectionalLightSource.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Pillar.h" />
+    <ClInclude Include="PointLightSource.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderData.h" />

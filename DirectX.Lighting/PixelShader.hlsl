@@ -8,7 +8,7 @@ float4 main(PixelInput input) : SV_TARGET
 	float4 diffuse_texture = TextureDiffuse.Sample(SamplerAnisotropic, input.Texture);
 
 	// Diffuse lighting
-	float3 lightVec = mDirectionalLight.mDirection.xyz;
+	float3 lightVec = -mDirectionalLight.mDirection.xyz;
 	float4 diffuse_light = saturate(dot(lightVec, input.Normal)) * mDirectionalLight.mDiffuse * mMaterial.mDiffuse;
 
 	// Ambient lighting

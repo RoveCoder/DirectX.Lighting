@@ -11,4 +11,6 @@ namespace Geometry
 	void CreateCylinder(float bottomRadius, float topRadius, float height, unsigned int sliceCount, unsigned int stackCount, MeshData* meshData);
 
 	void CreateFullscreenQuad(MeshData* meshData);
+
+	void CreateSphere(float radius, unsigned int sliceCount, unsigned int stackCount, MeshData* meshData);
 }
