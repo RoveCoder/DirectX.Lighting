@@ -34,7 +34,7 @@ float4 CalculatePointLighting(float3 position, float3 normal)
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), mDirectionalLight.mSpecular.w * mMaterial.mSpecular.w);
 	float4 specular_light = float4(spec * mPointLight.mSpecular.xyz * mMaterial.mSpecular.xyz, 1.0f);
 
-	return diffuse_light;
+	return diffuse_light + ambient_light + specular_light;
 }
 
 float4 main(PixelInput input) : SV_TARGET

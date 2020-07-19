@@ -9,9 +9,11 @@ DirectionalLightSource::DirectionalLightSource(Renderer* renderer, Camera* camer
 {
     // Set light
     m_DirectionalLight.mCameraPos = m_Camera->GetPosition();
-    m_DirectionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_DirectionalLight.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
-    m_DirectionalLight.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
+
+    m_DirectionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 0.5f, 1.0f);
+    m_DirectionalLight.mAmbient = DirectX::XMFLOAT4(0.5f, 0.5f, 0.25f, 0.0f);
+    m_DirectionalLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.1f, 32.0f);
+
     m_DirectionalLight.mDirection = DirectX::XMFLOAT4(-0.8f, -0.5f, 0.5f, 1.0f);
 }
 
@@ -29,7 +31,7 @@ bool DirectionalLightSource::Load()
     vertices[1].z = m_DirectionalLight.mDirection.z;
 
     // Arrow head
-    DirectX::XMFLOAT3 lightDir;
+    DirectX::XMFLOAT3 lightDir = DirectX::XMFLOAT3();
     auto lightDirVec = DirectX::XMLoadFloat4(&m_DirectionalLight.mDirection);
 
     lightDirVec = DirectX::XMVectorScale(lightDirVec, 0.8f);
@@ -95,7 +97,7 @@ void DirectionalLightSource::Render()
     Material material;
     material.mDiffuse = m_DirectionalLight.mDiffuse;
     material.mAmbient = m_DirectionalLight.mAmbient;
-    material.mSpecular = m_DirectionalLight.mSpecular;
+    material.mSpecular = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 
     cb.mMaterial = material;
 

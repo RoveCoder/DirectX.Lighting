@@ -134,6 +134,9 @@ int main(int argc, char** argv)
 			lightBuffer.mDirectionalLight = directionalLightSource->GetDirectionalLight();
 			lightBuffer.mPointLight = pointLightSource->GetPointLight();
 
+			lightBuffer.mDirectionalLight.mCameraPos = camera->GetPosition();
+			lightBuffer.mPointLight.mCameraPos = camera->GetPosition();
+
 			ID3D11Buffer* lightConsantBuffer = renderer->GetLightConstantBuffer();
 			renderer->GetDeviceContext()->PSSetConstantBuffers(1, 1, &lightConsantBuffer);
 			renderer->GetDeviceContext()->UpdateSubresource(lightConsantBuffer, 0, nullptr, &lightBuffer, 0, 0);

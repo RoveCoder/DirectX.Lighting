@@ -9,8 +9,9 @@ PointLightSource::PointLightSource(Renderer* renderer, Camera* camera) : m_Rende
 {
     m_PointLight.mCameraPos = camera->GetPosition();
     m_PointLight.mDiffuse = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
-    m_PointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
-    m_PointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
+    m_PointLight.mAmbient = DirectX::XMFLOAT4(0.0f, 0.0f, 0.2f, 0.0f);
+    m_PointLight.mSpecular = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 32.0f);
+
     m_PointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 2.5f, 2.0f, 1.0f);
 }
 

@@ -19,6 +19,19 @@ void Camera::Resize(int width, int height)
 	m_WindowHeight = height;
 }
 
+DirectX::XMFLOAT3 Camera::GetPosition()
+{
+	DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&m_Position);
+	DirectX::XMMATRIX camRotationMatrix = DirectX::XMMatrixRotationRollPitchYaw(DirectX::XMConvertToRadians(m_Pitch), DirectX::XMConvertToRadians(m_Yaw), 0);
+	position = XMVector3TransformCoord(position, camRotationMatrix);
+
+
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMStoreFloat3(&pos, position);
+
+	return pos;
+}
+
 void Camera::Update(float yaw, float pitch)
 {
 	m_Yaw += (yaw * 0.25f);
