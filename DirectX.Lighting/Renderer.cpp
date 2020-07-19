@@ -30,6 +30,8 @@ bool Renderer::Init()
 
 	CreateAnisotropicFilter();
 
+	EnableWireframe(false);
+
 	return true;
 }
 

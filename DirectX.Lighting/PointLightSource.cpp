@@ -5,8 +5,13 @@
 #include "DDSTextureLoader.h"
 #include "ShaderData.h"
 
-PointLightSource::PointLightSource(Renderer* renderer) : m_Renderer(renderer)
+PointLightSource::PointLightSource(Renderer* renderer, Camera* camera) : m_Renderer(renderer), m_Camera(camera)
 {
+    m_PointLight.mCameraPos = camera->GetPosition();
+    m_PointLight.mDiffuse = DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+    m_PointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
+    m_PointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
+    m_PointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 2.5f, 2.0f, 1.0f);
 }
 
 bool PointLightSource::Load()
@@ -45,7 +50,7 @@ bool PointLightSource::Load()
     return true;
 }
 
-void PointLightSource::Render(Camera* camera)
+void PointLightSource::Render()
 {
     // Bind the vertex buffer
     UINT stride = sizeof(Vertex);
@@ -60,18 +65,18 @@ void PointLightSource::Render(Camera* camera)
     m_Renderer->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     // Set world buffer
-    DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(0.0f, 0.5f, 2.0f);
+    DirectX::XMMATRIX world = DirectX::XMMatrixTranslation(m_PointLight.mLightPos.x, m_PointLight.mLightPos.y, m_PointLight.mLightPos.z);
 
     ConstantBuffer cb;
     cb.mWorld = DirectX::XMMatrixTranspose(world);
-    cb.mView = DirectX::XMMatrixTranspose(camera->GetView());
-    cb.mProjection = DirectX::XMMatrixTranspose(camera->GetProjection());
+    cb.mView = DirectX::XMMatrixTranspose(m_Camera->GetView());
+    cb.mProjection = DirectX::XMMatrixTranspose(m_Camera->GetProjection());
     cb.mWorldInverse = DirectX::XMMatrixInverse(nullptr, world);
 
     Material material;
-    material.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-    material.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-    material.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    material.mDiffuse = m_PointLight.mDiffuse;
+    material.mAmbient = m_PointLight.mDiffuse;
+    material.mSpecular = m_PointLight.mDiffuse;
 
     cb.mMaterial = material;
 

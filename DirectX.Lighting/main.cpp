@@ -77,16 +77,9 @@ int main(int argc, char** argv)
 	if (!directionalLightSource->Load())
 		return -1;
 
-	PointLightSource* pointLightSource = new PointLightSource(renderer);
+	PointLightSource* pointLightSource = new PointLightSource(renderer, camera);
 	if (!pointLightSource->Load())
 		return -1;
-
-	PointLight pointLight = {};
-	pointLight.mCameraPos = camera->GetPosition();
-	pointLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	pointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
-	pointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
-	pointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 0.5f, 2.0f, 1.0f);
 
 	// Main loop
 	bool running = true;
@@ -139,7 +132,7 @@ int main(int argc, char** argv)
 			// Update lights
 			LightBuffer lightBuffer;
 			lightBuffer.mDirectionalLight = directionalLightSource->GetDirectionalLight();
-			lightBuffer.mPointLight = pointLight;
+			lightBuffer.mPointLight = pointLightSource->GetPointLight();
 
 			ID3D11Buffer* lightConsantBuffer = renderer->GetLightConstantBuffer();
 			renderer->GetDeviceContext()->PSSetConstantBuffers(1, 1, &lightConsantBuffer);
@@ -153,7 +146,7 @@ int main(int argc, char** argv)
 			pillarRight->Render(camera);
 
 			directionalLightSource->Render();
-			pointLightSource->Render(camera);
+			pointLightSource->Render();
 
 			// Draw scene
 			renderer->Render();

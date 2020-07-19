@@ -93,9 +93,9 @@ void DirectionalLightSource::Render()
     cb.mWorldInverse = DirectX::XMMatrixInverse(nullptr, world);
 
     Material material;
-    material.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-    material.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
-    material.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    material.mDiffuse = m_DirectionalLight.mDiffuse;
+    material.mAmbient = m_DirectionalLight.mAmbient;
+    material.mSpecular = m_DirectionalLight.mSpecular;
 
     cb.mMaterial = material;
 

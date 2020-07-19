@@ -3,7 +3,6 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "Mesh.h"
-#include <DirectXMath.h>
 #include "ShaderData.h"
 
 class DirectionalLightSource
