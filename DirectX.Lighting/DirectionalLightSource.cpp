@@ -5,8 +5,14 @@
 #include "ShaderData.h"
 #include <cmath>
 
-DirectionalLightSource::DirectionalLightSource(Renderer* renderer) : m_Renderer(renderer)
+DirectionalLightSource::DirectionalLightSource(Renderer* renderer, Camera* camera) : m_Renderer(renderer), m_Camera(camera)
 {
+    // Set light
+    m_DirectionalLight.mCameraPos = m_Camera->GetPosition();
+    m_DirectionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_DirectionalLight.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
+    m_DirectionalLight.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
+    m_DirectionalLight.mDirection = DirectX::XMFLOAT4(-0.8f, -0.5f, 0.5f, 1.0f);
 }
 
 bool DirectionalLightSource::Load()
@@ -18,13 +24,13 @@ bool DirectionalLightSource::Load()
     vertices[0].y = 0;
     vertices[0].z = 0;
 
-    vertices[1].x = 0.8;
-    vertices[1].y = 0.5;
-    vertices[1].z = -0.5;
+    vertices[1].x = m_DirectionalLight.mDirection.x;
+    vertices[1].y = m_DirectionalLight.mDirection.y;
+    vertices[1].z = m_DirectionalLight.mDirection.z;
 
     // Arrow head
-    auto lightDir = DirectX::XMFLOAT3(0.8f, 0.5f, -0.5f);
-    auto lightDirVec = DirectX::XMLoadFloat3(&lightDir);
+    DirectX::XMFLOAT3 lightDir;
+    auto lightDirVec = DirectX::XMLoadFloat4(&m_DirectionalLight.mDirection);
 
     lightDirVec = DirectX::XMVectorScale(lightDirVec, 0.8f);
 
@@ -61,7 +67,7 @@ bool DirectionalLightSource::Load()
     return true;
 }
 
-void DirectionalLightSource::Render(Camera* camera)
+void DirectionalLightSource::Render()
 {
     // Bind the vertex buffer
     UINT stride = sizeof(Vertex);
@@ -82,8 +88,8 @@ void DirectionalLightSource::Render(Camera* camera)
 
     ConstantBuffer cb;
     cb.mWorld = DirectX::XMMatrixTranspose(world);
-    cb.mView = DirectX::XMMatrixTranspose(camera->GetView());
-    cb.mProjection = DirectX::XMMatrixTranspose(camera->GetProjection());
+    cb.mView = DirectX::XMMatrixTranspose(m_Camera->GetView());
+    cb.mProjection = DirectX::XMMatrixTranspose(m_Camera->GetProjection());
     cb.mWorldInverse = DirectX::XMMatrixInverse(nullptr, world);
 
     Material material;

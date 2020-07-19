@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 	pillarRight->Position.x = 3.0f;
 
 	// Lights
-	DirectionalLightSource* directionalLightSource = new DirectionalLightSource(renderer);
+	DirectionalLightSource* directionalLightSource = new DirectionalLightSource(renderer, camera);
 	if (!directionalLightSource->Load())
 		return -1;
 
@@ -81,23 +81,12 @@ int main(int argc, char** argv)
 	if (!pointLightSource->Load())
 		return -1;
 
-	DirectionalLight directionalLight = {};
-	directionalLight.mCameraPos = camera->GetPosition();
-	directionalLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	directionalLight.mAmbient = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
-	directionalLight.mSpecular = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
-	directionalLight.mDirection = DirectX::XMFLOAT4(0.8f, 0.5f, -0.5f, 1.0f);
-
 	PointLight pointLight = {};
 	pointLight.mCameraPos = camera->GetPosition();
 	pointLight.mDiffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	pointLight.mAmbient = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 0.0f);
 	pointLight.mSpecular = DirectX::XMFLOAT4(0.2f, 0.2f, 0.2f, 32.0f);
 	pointLight.mLightPos = DirectX::XMFLOAT4(0.0f, 0.5f, 2.0f, 1.0f);
-
-	LightBuffer lightBuffer;
-	lightBuffer.mDirectionalLight = directionalLight;
-	lightBuffer.mPointLight = pointLight;
 
 	// Main loop
 	bool running = true;
@@ -145,22 +134,28 @@ int main(int argc, char** argv)
 		else
 		{
 			renderer->Clear();
-
 			shader->Use();
+
+			// Update lights
+			LightBuffer lightBuffer;
+			lightBuffer.mDirectionalLight = directionalLightSource->GetDirectionalLight();
+			lightBuffer.mPointLight = pointLight;
 
 			ID3D11Buffer* lightConsantBuffer = renderer->GetLightConstantBuffer();
 			renderer->GetDeviceContext()->PSSetConstantBuffers(1, 1, &lightConsantBuffer);
 			renderer->GetDeviceContext()->UpdateSubresource(lightConsantBuffer, 0, nullptr, &lightBuffer, 0, 0);
 
+			// Draw models
 			crate->Render(camera);
 			floor->Render(camera);
 
 			pillarLeft->Render(camera);
 			pillarRight->Render(camera);
 
-			directionalLightSource->Render(camera);
+			directionalLightSource->Render();
 			pointLightSource->Render(camera);
 
+			// Draw scene
 			renderer->Render();
 		}
 	}
